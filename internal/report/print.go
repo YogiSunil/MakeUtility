@@ -26,4 +26,6 @@ func Print(w io.Writer, results []runner.Result) {
 	}
 
 	fmt.Fprintln(w, divider)
+	passed, failed := Summary(results)
+	fmt.Fprintf(w, "Passed: %d | Failed: %d\n", passed, failed)
 }
