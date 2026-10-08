@@ -32,10 +32,13 @@ func Check(e config.Endpoint, timeout time.Duration) Result {
 	defer resp.Body.Close()
 
 	result.StatusCode = resp.StatusCode
-	if resp.StatusCode == e.ExpectedStatus {
-		result.Passed = true
-	} else {
+	switch {
+	case resp.StatusCode != e.ExpectedStatus:
 		result.Error = fmt.Sprintf("expected status %d, got %d", e.ExpectedStatus, resp.StatusCode)
+	case e.MaxLatencyMs > 0 && result.LatencyMs > int64(e.MaxLatencyMs):
+		result.Error = fmt.Sprintf("too slow: %dms (max %dms)", result.LatencyMs, e.MaxLatencyMs)
+	default:
+		result.Passed = true
 	}
 	return result
 }
