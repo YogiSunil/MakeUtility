@@ -30,12 +30,16 @@ var testCmd = &cobra.Command{
 
 		out := cmd.OutOrStdout()
 		results := runner.RunAll(cfg.Endpoints, timeout)
-		report.Print(out, results, verbose)
+		if err := report.Print(out, results, verbose); err != nil {
+			return fmt.Errorf("print results: %w", err)
+		}
 
 		if err := report.Save(output, results); err != nil {
 			return err
 		}
-		fmt.Fprintf(out, "\nReport saved to %s\n", output)
+		if _, err := fmt.Fprintf(out, "\nReport saved to %s\n", output); err != nil {
+			return fmt.Errorf("print report location: %w", err)
+		}
 
 		if _, failed := report.Summary(results); failed > 0 {
 			return fmt.Errorf("%d endpoint(s) failed", failed)

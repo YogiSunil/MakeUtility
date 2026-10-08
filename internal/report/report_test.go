@@ -3,6 +3,8 @@ package report
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -64,7 +66,9 @@ func TestSave(t *testing.T) {
 
 func TestPrint(t *testing.T) {
 	var buf bytes.Buffer
-	Print(&buf, sampleResults(), false)
+	if err := Print(&buf, sampleResults(), false); err != nil {
+		t.Fatal(err)
+	}
 
 	out := buf.String()
 	for _, want := range []string{"PASS", "FAIL", "orders", "Passed: 2 | Failed: 1"} {
@@ -80,8 +84,12 @@ func TestPrintVerbose(t *testing.T) {
 	}
 
 	var quiet, loud bytes.Buffer
-	Print(&quiet, results, false)
-	Print(&loud, results, true)
+	if err := Print(&quiet, results, false); err != nil {
+		t.Fatal(err)
+	}
+	if err := Print(&loud, results, true); err != nil {
+		t.Fatal(err)
+	}
 
 	if strings.Contains(quiet.String(), "https://example.com/users") {
 		t.Error("the url should only be shown with verbose on")
@@ -89,4 +97,17 @@ func TestPrintVerbose(t *testing.T) {
 	if !strings.Contains(loud.String(), "https://example.com/users (status 200)") {
 		t.Errorf("verbose output is missing the url and status:\n%s", loud.String())
 	}
+}
+
+func TestPrintReturnsWriterError(t *testing.T) {
+	err := Print(errorWriter{}, nil, false)
+	if !errors.Is(err, io.ErrClosedPipe) {
+		t.Fatalf("Print() error = %v, want %v", err, io.ErrClosedPipe)
+	}
+}
+
+type errorWriter struct{}
+
+func (errorWriter) Write([]byte) (int, error) {
+	return 0, io.ErrClosedPipe
 }

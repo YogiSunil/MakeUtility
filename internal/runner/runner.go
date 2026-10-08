@@ -29,8 +29,6 @@ func Check(e config.Endpoint, timeout time.Duration) Result {
 		result.Error = err.Error()
 		return result
 	}
-	defer resp.Body.Close()
-
 	result.StatusCode = resp.StatusCode
 	switch {
 	case resp.StatusCode != e.ExpectedStatus:
@@ -39,6 +37,14 @@ func Check(e config.Endpoint, timeout time.Duration) Result {
 		result.Error = fmt.Sprintf("too slow: %dms (max %dms)", result.LatencyMs, e.MaxLatencyMs)
 	default:
 		result.Passed = true
+	}
+	if err := resp.Body.Close(); err != nil {
+		result.Passed = false
+		if result.Error == "" {
+			result.Error = fmt.Sprintf("failed to close response body: %v", err)
+		} else {
+			result.Error += fmt.Sprintf("; failed to close response body: %v", err)
+		}
 	}
 	return result
 }
