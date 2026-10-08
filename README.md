@@ -1,5 +1,7 @@
 # APIForge
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/YogiSunil/MakeUtility)](https://goreportcard.com/report/github.com/YogiSunil/MakeUtility)
+
 APIForge is a small command-line tool written in Go that tests REST API endpoints. You list your endpoints in a JSON file and run one command. APIForge sends the requests, checks the status codes, measures how long each one takes, and saves a report.
 
 ## Features
