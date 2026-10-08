@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
 
@@ -11,6 +12,8 @@ import (
 )
 
 const reportFile = "results.json"
+
+var timeout time.Duration
 
 var testCmd = &cobra.Command{
 	Use:          "test <endpoints.json>",
@@ -24,7 +27,7 @@ var testCmd = &cobra.Command{
 		}
 
 		out := cmd.OutOrStdout()
-		results := runner.RunAll(cfg.Endpoints, runner.DefaultTimeout)
+		results := runner.RunAll(cfg.Endpoints, timeout)
 		report.Print(out, results)
 
 		if err := report.Save(reportFile, results); err != nil {
@@ -41,4 +44,5 @@ var testCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(testCmd)
+	testCmd.Flags().DurationVar(&timeout, "timeout", runner.DefaultTimeout, "how long to wait for each endpoint")
 }
