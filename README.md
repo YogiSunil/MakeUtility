@@ -36,3 +36,27 @@ apiforge test endpoints.json
 | `--verbose` | `-v` | off | Also show the URL and status code for every endpoint |
 
 If any endpoint fails, APIForge exits with status 1.
+
+## Endpoints file
+
+```json
+{
+  "endpoints": [
+    {
+      "name": "users",
+      "url": "https://jsonplaceholder.typicode.com/users",
+      "method": "GET",
+      "expected_status": 200,
+      "max_latency_ms": 1500
+    }
+  ]
+}
+```
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `url` | yes | Full http or https address |
+| `name` | no | Label used in the results. Defaults to the URL |
+| `method` | no | GET, POST, PUT, PATCH, DELETE or HEAD. Defaults to GET |
+| `expected_status` | no | Status code that counts as a pass. Defaults to 200 |
+| `max_latency_ms` | no | The test fails if the response takes longer. 0 means no limit |
