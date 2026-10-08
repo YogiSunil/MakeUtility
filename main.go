@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/YogiSunil/MakeUtility/cmd"
 
 func main() {
-	fmt.Println("APIForge")
+	cmd.Execute()
 }
