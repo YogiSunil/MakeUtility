@@ -7,3 +7,14 @@ Software developers frequently need to test REST API endpoints while building an
 ## Proposed Solution
 I plan to develop APIForge, a command-line utility written in Go that allows developers to test multiple REST API endpoints from one configuration file. The program will send HTTP requests, check response status codes, measure response times, and display results in the terminal. It will also save the results to a JSON file for later review.
 
+
+## Main Features
+
+- Load API endpoints from a JSON configuration file.
+- Send HTTP requests and record response status codes.
+- Measure the response time of each request.
+- Identify successful and failed tests.
+- Display readable results in the terminal.
+- Save test results in a JSON report.
+- Support concurrent endpoint testing using Go goroutines.
+
