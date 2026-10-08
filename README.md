@@ -76,3 +76,13 @@ Passed: 3 | Failed: 0
 
 Report saved to results.json
 ```
+
+## Development
+
+```
+go test ./...            # run the tests
+go test -bench=. ./...   # run the benchmark
+go vet ./...             # check for common mistakes
+```
+
+The same commands are available through `make test`, `make bench` and `make vet`.
