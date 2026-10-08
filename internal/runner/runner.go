@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -31,5 +32,10 @@ func Check(e config.Endpoint, timeout time.Duration) Result {
 	defer resp.Body.Close()
 
 	result.StatusCode = resp.StatusCode
+	if resp.StatusCode == e.ExpectedStatus {
+		result.Passed = true
+	} else {
+		result.Error = fmt.Sprintf("expected status %d, got %d", e.ExpectedStatus, resp.StatusCode)
+	}
 	return result
 }
