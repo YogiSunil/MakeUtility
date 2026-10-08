@@ -60,3 +60,21 @@ func TestLoadMissingFile(t *testing.T) {
 		t.Error("expected an error for a missing file")
 	}
 }
+
+func TestLoadDefaults(t *testing.T) {
+	cfg, err := Load(writeTempFile(t, `{"endpoints": [{"url": "https://example.com/health", "method": "get"}]}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	e := cfg.Endpoints[0]
+	if e.Method != "GET" {
+		t.Errorf("Method = %q, want GET", e.Method)
+	}
+	if e.ExpectedStatus != 200 {
+		t.Errorf("ExpectedStatus = %d, want 200", e.ExpectedStatus)
+	}
+	if e.Name != "https://example.com/health" {
+		t.Errorf("Name = %q, want the url", e.Name)
+	}
+}
