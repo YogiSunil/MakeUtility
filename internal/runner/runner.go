@@ -7,8 +7,11 @@ import (
 	"github.com/YogiSunil/MakeUtility/internal/config"
 )
 
+// DefaultTimeout is how long we wait for one endpoint to answer.
+const DefaultTimeout = 10 * time.Second
+
 // Check sends one request to the endpoint and returns what happened.
-func Check(e config.Endpoint) Result {
+func Check(e config.Endpoint, timeout time.Duration) Result {
 	result := Result{Name: e.Name, URL: e.URL, Method: e.Method}
 
 	req, err := http.NewRequest(e.Method, e.URL, nil)
@@ -17,8 +20,9 @@ func Check(e config.Endpoint) Result {
 		return result
 	}
 
+	client := &http.Client{Timeout: timeout}
 	start := time.Now()
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := client.Do(req)
 	result.LatencyMs = time.Since(start).Milliseconds()
 	if err != nil {
 		result.Error = err.Error()
