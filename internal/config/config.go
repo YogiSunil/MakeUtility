@@ -1,4 +1,3 @@
-// Package config defines the endpoint configuration read from JSON.
 package config
 
 // Endpoint describes one API endpoint to test.
