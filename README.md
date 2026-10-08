@@ -22,3 +22,17 @@ go build -o apiforge .
 ```
 
 This creates an `apiforge` program in the project folder.
+
+## Usage
+
+```
+apiforge test endpoints.json
+```
+
+| Flag | Short | Default | What it does |
+| --- | --- | --- | --- |
+| `--output` | `-o` | `results.json` | Where to save the JSON report |
+| `--timeout` | | `10s` | How long to wait for each endpoint |
+| `--verbose` | `-v` | off | Also show the URL and status code for every endpoint |
+
+If any endpoint fails, APIForge exits with status 1.
