@@ -11,9 +11,10 @@ import (
 	"github.com/YogiSunil/MakeUtility/internal/runner"
 )
 
-const reportFile = "results.json"
-
-var timeout time.Duration
+var (
+	timeout time.Duration
+	output  string
+)
 
 var testCmd = &cobra.Command{
 	Use:          "test <endpoints.json>",
@@ -30,10 +31,10 @@ var testCmd = &cobra.Command{
 		results := runner.RunAll(cfg.Endpoints, timeout)
 		report.Print(out, results)
 
-		if err := report.Save(reportFile, results); err != nil {
+		if err := report.Save(output, results); err != nil {
 			return err
 		}
-		fmt.Fprintf(out, "\nReport saved to %s\n", reportFile)
+		fmt.Fprintf(out, "\nReport saved to %s\n", output)
 
 		if _, failed := report.Summary(results); failed > 0 {
 			return fmt.Errorf("%d endpoint(s) failed", failed)
@@ -44,5 +45,6 @@ var testCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(testCmd)
+	testCmd.Flags().StringVarP(&output, "output", "o", "results.json", "where to save the JSON report")
 	testCmd.Flags().DurationVar(&timeout, "timeout", runner.DefaultTimeout, "how long to wait for each endpoint")
 }
