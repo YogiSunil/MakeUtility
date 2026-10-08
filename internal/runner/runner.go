@@ -2,6 +2,7 @@ package runner
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/YogiSunil/MakeUtility/internal/config"
 )
@@ -16,7 +17,9 @@ func Check(e config.Endpoint) Result {
 		return result
 	}
 
+	start := time.Now()
 	resp, err := http.DefaultClient.Do(req)
+	result.LatencyMs = time.Since(start).Milliseconds()
 	if err != nil {
 		result.Error = err.Error()
 		return result
