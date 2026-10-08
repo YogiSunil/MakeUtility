@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/YogiSunil/MakeUtility/internal/config"
+	"github.com/YogiSunil/MakeUtility/internal/runner"
 )
 
 var testCmd = &cobra.Command{
@@ -18,7 +19,10 @@ var testCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("Loaded %d endpoints from %s\n", len(cfg.Endpoints), args[0])
+		results := runner.RunAll(cfg.Endpoints, runner.DefaultTimeout)
+		for _, r := range results {
+			fmt.Printf("%s %s %d %dms\n", r.Method, r.Name, r.StatusCode, r.LatencyMs)
+		}
 		return nil
 	},
 }
