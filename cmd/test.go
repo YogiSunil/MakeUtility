@@ -14,6 +14,7 @@ import (
 var (
 	timeout time.Duration
 	output  string
+	verbose bool
 )
 
 var testCmd = &cobra.Command{
@@ -29,7 +30,7 @@ var testCmd = &cobra.Command{
 
 		out := cmd.OutOrStdout()
 		results := runner.RunAll(cfg.Endpoints, timeout)
-		report.Print(out, results)
+		report.Print(out, results, verbose)
 
 		if err := report.Save(output, results); err != nil {
 			return err
@@ -46,5 +47,6 @@ var testCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(testCmd)
 	testCmd.Flags().StringVarP(&output, "output", "o", "results.json", "where to save the JSON report")
+	testCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show the url and status code for every endpoint")
 	testCmd.Flags().DurationVar(&timeout, "timeout", runner.DefaultTimeout, "how long to wait for each endpoint")
 }

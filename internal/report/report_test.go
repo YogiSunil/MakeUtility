@@ -64,12 +64,29 @@ func TestSave(t *testing.T) {
 
 func TestPrint(t *testing.T) {
 	var buf bytes.Buffer
-	Print(&buf, sampleResults())
+	Print(&buf, sampleResults(), false)
 
 	out := buf.String()
 	for _, want := range []string{"PASS", "FAIL", "orders", "Passed: 2 | Failed: 1"} {
 		if !strings.Contains(out, want) {
 			t.Errorf("output is missing %q:\n%s", want, out)
 		}
+	}
+}
+
+func TestPrintVerbose(t *testing.T) {
+	results := []runner.Result{
+		{Name: "users", URL: "https://example.com/users", Method: "GET", StatusCode: 200, Passed: true},
+	}
+
+	var quiet, loud bytes.Buffer
+	Print(&quiet, results, false)
+	Print(&loud, results, true)
+
+	if strings.Contains(quiet.String(), "https://example.com/users") {
+		t.Error("the url should only be shown with verbose on")
+	}
+	if !strings.Contains(loud.String(), "https://example.com/users (status 200)") {
+		t.Errorf("verbose output is missing the url and status:\n%s", loud.String())
 	}
 }
