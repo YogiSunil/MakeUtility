@@ -10,3 +10,15 @@ APIForge is a small command-line tool written in Go that tests REST API endpoint
 - Prints a readable PASS/FAIL table in the terminal
 - Saves the results to a JSON report
 - Exits with an error code when a test fails, so it can be used in scripts
+
+## Installation
+
+You need Go 1.21 or newer.
+
+```
+git clone https://github.com/YogiSunil/MakeUtility.git
+cd MakeUtility
+go build -o apiforge .
+```
+
+This creates an `apiforge` program in the project folder.
