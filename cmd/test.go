@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 
 	"github.com/YogiSunil/MakeUtility/internal/config"
+	"github.com/YogiSunil/MakeUtility/internal/report"
 	"github.com/YogiSunil/MakeUtility/internal/runner"
 )
 
@@ -20,9 +19,7 @@ var testCmd = &cobra.Command{
 		}
 
 		results := runner.RunAll(cfg.Endpoints, runner.DefaultTimeout)
-		for _, r := range results {
-			fmt.Printf("%s %s %d %dms\n", r.Method, r.Name, r.StatusCode, r.LatencyMs)
-		}
+		report.Print(cmd.OutOrStdout(), results)
 		return nil
 	},
 }
