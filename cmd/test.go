@@ -1,12 +1,16 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"github.com/YogiSunil/MakeUtility/internal/config"
 	"github.com/YogiSunil/MakeUtility/internal/report"
 	"github.com/YogiSunil/MakeUtility/internal/runner"
 )
+
+const reportFile = "results.json"
 
 var testCmd = &cobra.Command{
 	Use:   "test <endpoints.json>",
@@ -18,8 +22,14 @@ var testCmd = &cobra.Command{
 			return err
 		}
 
+		out := cmd.OutOrStdout()
 		results := runner.RunAll(cfg.Endpoints, runner.DefaultTimeout)
-		report.Print(cmd.OutOrStdout(), results)
+		report.Print(out, results)
+
+		if err := report.Save(reportFile, results); err != nil {
+			return err
+		}
+		fmt.Fprintf(out, "\nReport saved to %s\n", reportFile)
 		return nil
 	},
 }
