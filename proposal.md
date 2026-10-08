@@ -18,3 +18,7 @@ I plan to develop APIForge, a command-line utility written in Go that allows dev
 - Save test results in a JSON report.
 - Support concurrent endpoint testing using Go goroutines.
 
+
+## Technologies
+The project will use Go as the primary programming language. I plan to use the Cobra package for command-line functionality, Go's standard `net/http` package for API requests, and `encoding/json` for reading configuration files and saving reports.
+
