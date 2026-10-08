@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+
+	"github.com/YogiSunil/MakeUtility/internal/config"
 )
 
 var testCmd = &cobra.Command{
@@ -11,7 +13,12 @@ var testCmd = &cobra.Command{
 	Short: "Test the endpoints listed in a JSON file",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Printf("Testing endpoints from %s\n", args[0])
+		cfg, err := config.Load(args[0])
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("Loaded %d endpoints from %s\n", len(cfg.Endpoints), args[0])
 		return nil
 	},
 }
