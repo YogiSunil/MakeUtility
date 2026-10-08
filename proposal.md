@@ -22,3 +22,10 @@ I plan to develop APIForge, a command-line utility written in Go that allows dev
 ## Technologies
 The project will use Go as the primary programming language. I plan to use the Cobra package for command-line functionality, Go's standard `net/http` package for API requests, and `encoding/json` for reading configuration files and saving reports.
 
+
+## Testing
+I will create table-driven tests to verify endpoint validation and response evaluation. I will also implement a benchmark test to measure the performance of report processing or another repeatable operation.
+
+## Expected Outcome
+My goal is to create a practical developer utility that reduces repetitive API testing work and provides useful information about endpoint reliability and response times. I also want to improve my understanding of Go, external packages, error handling, concurrency, and automated testing.
+
