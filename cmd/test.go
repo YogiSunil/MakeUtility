@@ -13,9 +13,10 @@ import (
 const reportFile = "results.json"
 
 var testCmd = &cobra.Command{
-	Use:   "test <endpoints.json>",
-	Short: "Test the endpoints listed in a JSON file",
-	Args:  cobra.ExactArgs(1),
+	Use:          "test <endpoints.json>",
+	Short:        "Test the endpoints listed in a JSON file",
+	Args:         cobra.ExactArgs(1),
+	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.Load(args[0])
 		if err != nil {
@@ -30,6 +31,10 @@ var testCmd = &cobra.Command{
 			return err
 		}
 		fmt.Fprintf(out, "\nReport saved to %s\n", reportFile)
+
+		if _, failed := report.Summary(results); failed > 0 {
+			return fmt.Errorf("%d endpoint(s) failed", failed)
+		}
 		return nil
 	},
 }
