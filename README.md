@@ -60,3 +60,19 @@ If any endpoint fails, APIForge exits with status 1.
 | `method` | no | GET, POST, PUT, PATCH, DELETE or HEAD. Defaults to GET |
 | `expected_status` | no | Status code that counts as a pass. Defaults to 200 |
 | `max_latency_ms` | no | The test fails if the response takes longer. 0 means no limit |
+
+## Example output
+
+```
+$ apiforge test endpoints.json
+
+APIForge Results
+------------------------------------------------
+GET    httpbin get              PASS    195ms
+GET    users                    PASS     92ms
+GET    missing page             PASS    195ms
+------------------------------------------------
+Passed: 3 | Failed: 0
+
+Report saved to results.json
+```
