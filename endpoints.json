@@ -1,0 +1,25 @@
+{
+  "endpoints": [
+    {
+      "name": "httpbin get",
+      "url": "https://httpbin.org/get",
+      "method": "GET",
+      "expected_status": 200,
+      "max_latency_ms": 2000
+    },
+    {
+      "name": "users",
+      "url": "https://jsonplaceholder.typicode.com/users",
+      "method": "GET",
+      "expected_status": 200,
+      "max_latency_ms": 1500
+    },
+    {
+      "name": "missing page",
+      "url": "https://httpbin.org/status/404",
+      "method": "GET",
+      "expected_status": 404,
+      "max_latency_ms": 2000
+    }
+  ]
+}
